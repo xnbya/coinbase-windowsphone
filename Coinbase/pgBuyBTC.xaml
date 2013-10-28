@@ -1,0 +1,57 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Coinbase.pgBuyBTC"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True" xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" xmlns:my="clr-namespace:System;assembly=mscorlib">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="COINBASE" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="buy &amp; sell" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <StackPanel x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" HorizontalAlignment="Left" VerticalAlignment="Top">
+            <toolkit:ListPicker Name="lstBuySell" Width="396" HorizontalAlignment="Left"  Margin="20,0,0,0" SelectionChanged="lstBuySell_SelectionChanged">
+                <TextBlock Text="Buy" Name="Buy" />
+                <TextBlock Text="Sell" Name="Sell" />
+            </toolkit:ListPicker>
+            <TextBlock Height="69" Name="textBlock1" Text="Amount (BTC):" FontSize="40" Width="404" Margin="20,0,0,0" HorizontalAlignment="Left" />
+            <TextBox Height="71"  Name="txtAmount" Text="" Width="422" HorizontalAlignment="Left" Margin="8,0,0,0" TextChanged="txtAmount_TextChanged" />
+            <TextBlock FontSize="25" Height="69" Name="lblSubtotal" Text="" Width="404" Foreground="#FFB4B4B4" Margin="20,0,0,0"/>
+            <TextBlock FontSize="25" Foreground="#FFB4B4B4" Height="69" Name="lblCFees" Text="" Width="404" Margin="20,0,0,0"/>
+            <TextBlock FontSize="25" Foreground="#FFB4B4B4" Height="69" Name="lblBankFees" Text="" Width="404" Margin="20,0,0,0"/>
+            <TextBlock FontSize="30" Height="69" Name="lblPrice" Text="0 USD" Width="404" Margin="20,0,0,0" />
+            <Button Content="Buy Bitcoins" Height="71" Name="btnBuySell" Width="231" Click="button1_Click_1" />
+        </StackPanel>
+    </Grid>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>

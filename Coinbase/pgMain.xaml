@@ -1,0 +1,91 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Coinbase.pgMain"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit"
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="728"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="False" Loaded="PhoneApplicationPage_Loaded" >
+
+    <!--LayoutRoot contains the root grid where all other page content is placed-->
+    <Grid x:Name="LayoutRoot">
+        <controls:Panorama Title="coinbase" SelectionChanged="Panorama_SelectionChanged" Name="pan">
+            <controls:Panorama.TitleTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Content, RelativeSource={RelativeSource TemplatedParent}}" FontSize="160" Margin="0,25,0,-40" />
+                </DataTemplate>
+            </controls:Panorama.TitleTemplate>
+
+            <!--Panorama item one-->
+            <controls:PanoramaItem Header="account">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="29" />
+                        <RowDefinition Height="469" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Height="56" HorizontalAlignment="Right" Margin="0,36,230,0" Name="lblBalance" Text="Balance:" VerticalAlignment="Top" FontSize="40" Width="179" Grid.Row="1" />
+                    
+                    <TextBlock Grid.Row="1" Height="80" Margin="0,79,68,0" Name="lblBalanceBTC" Text="Loading..." VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Right" Width="341" />
+                    <TextBlock FontSize="40" Height="80" HorizontalAlignment="Right" Margin="0,141,65,0" Name="lblLocalCurrAmount" Text="Loading..." VerticalAlignment="Top" Width="341" Grid.Row="1" />
+                    <Button Content="Buy  &amp; Sell Bitcoins" Grid.Row="1" Height="72" HorizontalAlignment="Left" Margin="3,215,0,0" Name="btnBuyBTC" VerticalAlignment="Top" Width="303" Click="btnBuyBTC_Click" />
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Right" Margin="0,7,17,0" Name="lblUser" Text="User" VerticalAlignment="Top" Width="392" Grid.RowSpan="2" />
+                </Grid>
+            </controls:PanoramaItem>
+
+            <!--Panorama item two-->
+            <controls:PanoramaItem Header="send" MouseMove="PanoramaItem_MouseMove">
+                <Grid>
+                    <TextBlock Height="59" HorizontalAlignment="Left" Margin="13,7,0,0" Name="textBlock1" Text="To:" VerticalAlignment="Top" FontSize="40" Width="69" />
+                    <TextBox Height="72" HorizontalAlignment="Left" Margin="4,53,0,0" Name="txtSendTo" Text="" VerticalAlignment="Top" Width="415" />
+                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="19,121,0,0" Name="textBlock2" Text="enter an email or bitcoin address" VerticalAlignment="Top" />
+                    <TextBlock FontSize="40" Height="59" HorizontalAlignment="Left" Margin="16,154,0,0" Name="textBlock3" Text="Amount (BTC):" VerticalAlignment="Top" Width="270" />
+                    <TextBox InputScope="Number" Height="72" HorizontalAlignment="Left" Margin="4,198,0,0" Name="txtAmount" Text="" VerticalAlignment="Top" Width="415" />                    
+                    <TextBlock FontSize="40" Height="59" HorizontalAlignment="Left" Margin="15,263,0,0" Name="textBlock4" Text="Message:" VerticalAlignment="Top" Width="270" />
+                    <TextBox Height="168" HorizontalAlignment="Left" Margin="5,309,0,0" Name="txtMessage" Text="" VerticalAlignment="Top" Width="413" TextWrapping="Wrap" />
+                </Grid>
+            </controls:PanoramaItem>
+            <controls:PanoramaItem Header="receive">
+                <Grid>
+                    <TextBlock Height="30" HorizontalAlignment="Left" Margin="16,69,0,0" Name="txtBTCAddress" Text="error" VerticalAlignment="Top" />
+                    <TextBlock FontSize="40" Height="56" HorizontalAlignment="Right" Margin="0,10,95,0" Name="textBlock5" Text="Current Address:" VerticalAlignment="Top" Width="315" />
+                    <Image Height="350" HorizontalAlignment="Left" Margin="21,102,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="350" />
+                </Grid>
+            </controls:PanoramaItem>
+            <controls:PanoramaItem Header="history">
+                <Grid>
+                    <ListBox Height="496" HorizontalAlignment="Left" Margin="15,2,0,0" Name="lstHistory" VerticalAlignment="Top" Width="402" ItemsSource="{Binding}" SelectionChanged="lstHistory_SelectionChanged">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="{Binding Path=BTC}" FontSize="48"></TextBlock>
+                                    <TextBlock Text="{Binding Path=Name}" FontSize="20"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </controls:PanoramaItem>
+        </controls:Panorama>
+    </Grid>
+
+    <!--Panorama-based applications should not show an ApplicationBar-->
+    <phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True" Mode="Minimized" Opacity="1.0" >
+           
+
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="settings" Click="ApplicationBarMenuItem_Click" />
+                <shell:ApplicationBarMenuItem Text="log out" Click="ApplicationBarMenuItem_Click_1" />
+            </shell:ApplicationBar.MenuItems>
+
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>    
+</phone:PhoneApplicationPage>

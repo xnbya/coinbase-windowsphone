@@ -1,0 +1,73 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Coinbase.Settings"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:controls="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    mc:Ignorable="d" d:DesignWidth="480" d:DesignHeight="768"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait"  Orientation="Portrait"
+    shell:SystemTray.IsVisible="True" xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" xmlns:my="clr-namespace:System;assembly=mscorlib" Loaded="PhoneApplicationPage_Loaded">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="206*" />
+            <RowDefinition Height="562*" />
+        </Grid.RowDefinitions>
+        <Grid.Resources>
+            <DataTemplate x:Name="PickerFullModeItemTemplate">
+                <StackPanel Orientation="Horizontal" Margin="5 2 0 5">                   
+                    <TextBlock Text="{Binding Name}" Margin="3 5 0 0" FontSize="35" FontFamily="Segoe WP Light"/>
+                </StackPanel>
+            </DataTemplate>
+        </Grid.Resources>
+        <!--Pivot Control-->
+        <controls:Pivot Title="COINBASE" Grid.RowSpan="2">
+            <!--Pivot item one-->
+            <controls:PivotItem Header="settings">
+                <Grid>
+                    
+                    <TextBlock Height="56" HorizontalAlignment="Left" Margin="13,13,0,0" Name="textBlock1" Text="Default Currency:" VerticalAlignment="Top" FontSize="32" Width="252" />
+                    <toolkit:ListPicker Height="67" HorizontalAlignment="Left" Margin="294,4,0,0" Name="lstpkCurrency" VerticalAlignment="Top" Width="139" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerFullModeItemTemplate}" DisplayMemberPath="Code"></toolkit:ListPicker>
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="13,95,0,0" Name="textBlock2" Text="App Passcode:" VerticalAlignment="Top" Width="252" Visibility="Collapsed" />
+                    <toolkit:ToggleSwitch Height="107" Margin="2,118,13,0" Name="tglPasscode" VerticalAlignment="Top" Width="441" Checked="toggleSwitch1_Checked" Unchecked="tglPasscode_Unchecked" Visibility="Collapsed" />
+                    <TextBox Height="72" HorizontalAlignment="Left" Margin="1,239,0,0" Name="txtPassocde" Text="" VerticalAlignment="Top" Width="444" InputScope="Number" Visibility="Collapsed" />
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="13,189,0,0" Name="lblPasscode" Text="Passcode:" VerticalAlignment="Top" Width="252" Visibility="Collapsed" />
+                    <Button Content="Save Changes" Height="72" HorizontalAlignment="Left" Margin="2,525,0,0" Name="btnSaveChanges" VerticalAlignment="Top" Width="443" Click="btnSaveChanges_Click" />
+                </Grid>
+            </controls:PivotItem>
+
+            <!--Pivot item two-->
+            <controls:PivotItem Header="about">
+                <Grid>
+                    <Rectangle Height="120" HorizontalAlignment="Left" Margin="27,68,0,0" Name="rectangle1" Stroke="{x:Null}" StrokeThickness="1" VerticalAlignment="Top" Width="120" Fill="{StaticResource PhoneAccentBrush}"></Rectangle>
+                    <TextBlock Height="61" HorizontalAlignment="Left" Margin="158,138,0,0" Name="textBlock3" Text="BETA" VerticalAlignment="Top" FontSize="36" Width="171" />
+                    <TextBlock FontSize="26" Height="56" HorizontalAlignment="Left" Margin="161,61,0,0" Name="textBlock4" Text="created by" VerticalAlignment="Top" Width="252" />
+                    <TextBlock FontSize="26" Height="56" HorizontalAlignment="Left" Margin="160,97,0,0" Name="textBlock5" Text="Alexis Enston" VerticalAlignment="Top" Width="252" />
+                    <Image Height="100" HorizontalAlignment="Left" Margin="36,79,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="100" Source="/Coinbase;component/Images/BTC%20logo.png" />
+                    <TextBlock FontSize="32" Height="61" HorizontalAlignment="Left" Margin="10,10,0,0" Name="textBlock6" Text="Coinbase for Windows Phone" VerticalAlignment="Top" Width="432" />
+                </Grid>
+            </controls:PivotItem>
+        </controls:Pivot>
+    </Grid>   
+        
+
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton x:Name="appbar_button1" IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton x:Name="appbar_button2" IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem x:Name="menuItem1" Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem x:Name="menuItem2" Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+    
+</phone:PhoneApplicationPage>

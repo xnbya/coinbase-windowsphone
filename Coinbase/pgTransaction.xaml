@@ -1,0 +1,53 @@
+﻿<phone:PhoneApplicationPage 
+    x:Class="Coinbase.pgTransaction"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d" d:DesignHeight="768" d:DesignWidth="480"
+    shell:SystemTray.IsVisible="True">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot" Background="Transparent">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
+            <TextBlock x:Name="ApplicationTitle" Text="COINBASE" Style="{StaticResource PhoneTextNormalStyle}"/>
+            <TextBlock x:Name="PageTitle" Text="transaction" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+            <Rectangle Height="44" HorizontalAlignment="Left" Margin="12,278,0,0" Name="recGreen" Stroke="Black" StrokeThickness="1" VerticalAlignment="Top" Width="143" Fill="#FF008400" Visibility="Collapsed" />
+            <TextBlock Height="44" HorizontalAlignment="Left" Margin="18,18,0,0" Name="lblTime" Text="time" VerticalAlignment="Top" Width="438" FontSize="30" />
+            <TextBlock Height="57" HorizontalAlignment="Left" Margin="18,68,0,0" Name="lblBTC" Text="BTC" VerticalAlignment="Top" FontSize="50" Width="438" />
+            <TextBlock Height="41" HorizontalAlignment="Left" Margin="18,148,0,0" Name="lblFrom" Text="From" VerticalAlignment="Top" FontSize="35" Width="438" />
+            <TextBlock FontSize="35" Height="41" HorizontalAlignment="Left" Margin="18,212,0,0" Name="lblTo" Text="To" VerticalAlignment="Top" Width="438" Tap="lblTo_Tap" />
+            <TextBlock FontSize="30" Height="41" HorizontalAlignment="Left" Margin="18,277,0,0" Name="lblStatus" Text="complete" VerticalAlignment="Top" Width="438" TextAlignment="Left" />
+            <TextBlock FontSize="40" Height="60" HorizontalAlignment="Left" Margin="13,342,0,0" Name="lblRequest" Text="this is a request!" VerticalAlignment="Top" Width="438" TextAlignment="Left" Foreground="Red" Visibility="Collapsed" />
+        </Grid>
+    </Grid>
+ 
+    <!--Sample code showing usage of ApplicationBar-->
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+        <shell:ApplicationBar IsVisible="True" IsMenuEnabled="True">
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button1.png" Text="Button 1"/>
+            <shell:ApplicationBarIconButton IconUri="/Images/appbar_button2.png" Text="Button 2"/>
+            <shell:ApplicationBar.MenuItems>
+                <shell:ApplicationBarMenuItem Text="MenuItem 1"/>
+                <shell:ApplicationBarMenuItem Text="MenuItem 2"/>
+            </shell:ApplicationBar.MenuItems>
+        </shell:ApplicationBar>
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+
+</phone:PhoneApplicationPage>
