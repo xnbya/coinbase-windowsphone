@@ -31,6 +31,7 @@ namespace Coinbase
         public string AuthToken;
         string currentaddress;
         decimal currentaccountBTC;
+        public string currency;
 
         public pgMain()
         {            
@@ -40,11 +41,23 @@ namespace Coinbase
             GetAddress();
 
             //UI stuff
-            CreateButtons();
-            TiltEffect.TiltableItems.Add(typeof(TextBlock)); 
-                     
+            CreateButtons();         
 
+            
 
+        }
+
+        private void LoadCurrencies()
+        {
+            List<string> currencies = new List<string>();
+            currencies.Add("BTC");
+            currencies.Add("mBTC");
+            currencies.Add("µBTC");            
+            currencies.Add(currency);
+            Dispatcher.BeginInvoke(() =>
+                {
+                    lstpkCurrency.ItemsSource = currencies;
+                });
         }
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
@@ -200,10 +213,17 @@ namespace Coinbase
             {
                 txtSendTo.Text = btc;
             });*/
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
+            try
             {
-                NavigationService.Navigate(new Uri("/Scan.xaml", UriKind.Relative));                
-            });
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    NavigationService.Navigate(new Uri("/Scan.xaml", UriKind.Relative));
+                });
+            }
+            catch
+            {
+                MessageBox.Show("Error scanning QR code");
+            }
             
 
         }
@@ -244,19 +264,23 @@ namespace Coinbase
             PhoneApplicationService.Current.State["settings"] = settings;
 
 
-        }        
+        }
+
+
 
         private void GetBalanceLocalCurrency()
         {
             //convert the BTC to an amount in local currency
-            string currency = "USD";
+             currency = "USD";
             if (System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Contains("localcurrency"))
             {
                 currency = (string)System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings["localcurrency"];
             }
+            
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://coinbase.com/api/v1/prices/spot_rate?currency=" + currency);
             req.Method = "GET";
             req.BeginGetResponse(new AsyncCallback(LocalCurrBalanceClbk), req);
+            LoadCurrencies();
         }
 
         void LocalCurrBalanceClbk(IAsyncResult result)
@@ -332,7 +356,7 @@ namespace Coinbase
                         if (trans.request)
                             requeststr = "requested ";
 
-                        if (trans.recipient != null && trans.recipient.id == userID)
+                        if (trans.amount.amount.Substring(0,1) != "-")
                             {
                                 string sender = "";
                                 if (trans.sender == null)
@@ -478,6 +502,11 @@ namespace Coinbase
                 NavigationService.Navigate(new Uri("/pgBuyBTC.xaml", UriKind.Relative));
 
             });
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            lstHistory.Items[500] = "aa";
         }
 
     }

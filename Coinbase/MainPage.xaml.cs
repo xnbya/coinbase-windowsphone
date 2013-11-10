@@ -21,23 +21,34 @@ namespace Coinbase
     public partial class MainPage : PhoneApplicationPage
     {
         public bool SaveToken;
-       
+        private string passcode;
+        private bool loginauth;
+        private bool loadedtoken;
+
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-            ProgressIndicator progress = new ProgressIndicator
+
+            
+            //checks to see if pascode is needed to load app
+            if (System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Contains("passcode"))
             {
-                IsVisible = true,
-                IsIndeterminate = true,
-                Text = "Loading..."
-            };
-            SystemTray.SetProgressIndicator(this, progress);
+                passcode = (string)System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings["passcode"];
+                grid1.Visibility = System.Windows.Visibility.Visible;
+
+            }
+            else
+                loginauth = true;
+
             LoadAuth();
 
+          
             
         }
 
+
+    
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -53,6 +64,14 @@ namespace Coinbase
 
         private void LoadAuth()
         {
+            //OAUTH part
+            ProgressIndicator progress = new ProgressIndicator
+            {
+                IsVisible = true,
+                IsIndeterminate = true,
+                Text = "Loading..."
+            };
+            SystemTray.SetProgressIndicator(this, progress);
             System.IO.IsolatedStorage.IsolatedStorageSettings settings = System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings;
             if (settings.Contains("refreshToken"))
             {
@@ -71,6 +90,7 @@ namespace Coinbase
 
         private void LoadWebbrowser()
         {
+            //Load the web browser to allow user to login
             SystemTray.SetProgressIndicator(this, null);
                 Uri LoginUri = new Uri("https://coinbase.com/oauth/authorize?response_type=code&client_id=7c49c1d40b21548106163d2fc4151671f6227cc27033ddf0c5fcb48f74e44019&redirect_uri=urn:ietf:wg:oauth:2.0:oob");
                 webBrowser1.IsScriptEnabled = true;
@@ -102,16 +122,10 @@ namespace Coinbase
 
 
 
-        private void button2_Click(object sender, RoutedEventArgs e)
-        {
-
-
-        }
-
         void BalanceClbk(IAsyncResult result)
         {
             try
-            {
+          {
             
             //Get the tokens from the OAUTH response
             HttpWebRequest request = (HttpWebRequest)result.AsyncState;
@@ -140,26 +154,71 @@ namespace Coinbase
                     settings.Remove("refreshToken");
                 }
 
-                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                if (loginauth == true)
                 {
-                    // change UI here
-                    NavigationService.Navigate(new Uri("/pgMain.xaml", UriKind.Relative));
-                    //NavigationService.GoBack();
-                });
 
-            }
-            }
-                catch
-                {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {
                         // change UI here
+                        NavigationService.Navigate(new Uri("/pgMain.xaml", UriKind.Relative));
+                        //NavigationService.GoBack();
+                    });
+                }
+                else
+                {
+                    SystemTray.SetProgressIndicator(this, null);
+                    loadedtoken = true;
+                }
+
+            }
+            }
+             
+            catch
+                {
+
+                //something went wrong, goto the login page
+                //so the passcode can be ignored
+                    loginauth = true;
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {                        
                         LoadWebbrowser();
                     });
                     
                 }
 
             }
+
+        private void btnGotoLogin_Click(object sender, RoutedEventArgs e)
+        {
+            LoadWebbrowser();
+            System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Remove("passcode");
+        }
+
+        private void phoneTextBox1_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (txtPasscode.Text == passcode)
+            {
+                
+                loginauth = true;                
+                grid1.Visibility = System.Windows.Visibility.Collapsed;
+                if (loadedtoken)
+                {
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        // change UI here
+                        NavigationService.Navigate(new Uri("/pgMain.xaml", UriKind.Relative));
+                        //NavigationService.GoBack();
+                    });
+                }
+                
+            }
+        }
+
+        private void txtPasscode_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            passwordBox1.Password = txtPasscode.Text;
+        }
+
 
         
         }

@@ -35,11 +35,13 @@
                     
                     <TextBlock Height="56" HorizontalAlignment="Left" Margin="13,13,0,0" Name="textBlock1" Text="Default Currency:" VerticalAlignment="Top" FontSize="32" Width="252" />
                     <toolkit:ListPicker Height="67" HorizontalAlignment="Left" Margin="294,4,0,0" Name="lstpkCurrency" VerticalAlignment="Top" Width="139" ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerFullModeItemTemplate}" DisplayMemberPath="Code"></toolkit:ListPicker>
-                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="13,95,0,0" Name="textBlock2" Text="App Passcode:" VerticalAlignment="Top" Width="252" Visibility="Collapsed" />
-                    <toolkit:ToggleSwitch Height="107" Margin="2,118,13,0" Name="tglPasscode" VerticalAlignment="Top" Width="441" Checked="toggleSwitch1_Checked" Unchecked="tglPasscode_Unchecked" Visibility="Collapsed" />
-                    <TextBox Height="72" HorizontalAlignment="Left" Margin="1,239,0,0" Name="txtPassocde" Text="" VerticalAlignment="Top" Width="444" InputScope="Number" Visibility="Collapsed" />
-                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="13,189,0,0" Name="lblPasscode" Text="Passcode:" VerticalAlignment="Top" Width="252" Visibility="Collapsed" />
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="13,95,0,0" Name="textBlock2" Text="App Passcode:" VerticalAlignment="Top" Width="252" />
+                    <toolkit:ToggleSwitch Height="107" Margin="2,118,13,0" Name="tglPasscode" VerticalAlignment="Top" Width="441" Checked="toggleSwitch1_Checked" Unchecked="tglPasscode_Unchecked"  />
+                    <TextBox Height="72" HorizontalAlignment="Left" Margin="5,362,0,0" Name="txtPassocde" Text="" VerticalAlignment="Top" Width="444" InputScope="Number" Visibility="Collapsed" />
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="13,189,0,0" Name="lblPasscode2" Text="Current Passcode:" VerticalAlignment="Top" Width="252" Visibility="Collapsed" />
                     <Button Content="Save Changes" Height="72" HorizontalAlignment="Left" Margin="2,525,0,0" Name="btnSaveChanges" VerticalAlignment="Top" Width="443" Click="btnSaveChanges_Click" />
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="14,313,0,0" Name="lblPasscode" Text="New Passcode:" VerticalAlignment="Top" Width="252" Visibility="Collapsed" />
+                    <TextBox Height="72" HorizontalAlignment="Left" InputScope="Number" Margin="6,233,0,0" Name="txtOldPasscode" Text="" VerticalAlignment="Top" Width="444" Visibility="Collapsed" />
                 </Grid>
             </controls:PivotItem>
 
@@ -47,11 +49,12 @@
             <controls:PivotItem Header="about">
                 <Grid>
                     <Rectangle Height="120" HorizontalAlignment="Left" Margin="27,68,0,0" Name="rectangle1" Stroke="{x:Null}" StrokeThickness="1" VerticalAlignment="Top" Width="120" Fill="{StaticResource PhoneAccentBrush}"></Rectangle>
-                    <TextBlock Height="61" HorizontalAlignment="Left" Margin="158,138,0,0" Name="textBlock3" Text="BETA" VerticalAlignment="Top" FontSize="36" Width="171" />
-                    <TextBlock FontSize="26" Height="56" HorizontalAlignment="Left" Margin="161,61,0,0" Name="textBlock4" Text="created by" VerticalAlignment="Top" Width="252" />
-                    <TextBlock FontSize="26" Height="56" HorizontalAlignment="Left" Margin="160,97,0,0" Name="textBlock5" Text="Alexis Enston" VerticalAlignment="Top" Width="252" />
+                    <TextBlock Height="61" HorizontalAlignment="Left" Margin="159,67,0,0" Name="textBlock3" Text="Version 1.0" VerticalAlignment="Top" FontSize="36" Width="171" />
+                    <TextBlock FontSize="26" Height="56" HorizontalAlignment="Left" Margin="30,198,0,0" Name="textBlock4" Text="app created by" VerticalAlignment="Top" Width="252" />
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Left" Margin="30,236,0,0" Name="textBlock5" Text="Alexis Enston" VerticalAlignment="Top" Width="252" />
                     <Image Height="100" HorizontalAlignment="Left" Margin="36,79,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="100" Source="/Coinbase;component/Images/BTC%20logo.png" />
                     <TextBlock FontSize="32" Height="61" HorizontalAlignment="Left" Margin="10,10,0,0" Name="textBlock6" Text="Coinbase for Windows Phone" VerticalAlignment="Top" Width="432" />
+                    <TextBlock FontSize="26" Height="56" HorizontalAlignment="Left" Margin="30,277,0,0" Name="textBlock7" Text="alexisenston@outlook.com" VerticalAlignment="Top" Width="337" />
                 </Grid>
             </controls:PivotItem>
         </controls:Pivot>

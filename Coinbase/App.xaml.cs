@@ -101,6 +101,13 @@ namespace Coinbase
                 // An unhandled exception has occurred; break into the debugger
                 System.Diagnostics.Debugger.Break();
             }
+            else
+            {
+                MessageBox.Show(e.ExceptionObject.Message);
+                MessageBox.Show(e.ExceptionObject.StackTrace);
+                MessageBox.Show(e.ExceptionObject.Data.ToString());
+                
+            }
         }
 
         #region Phone application initialization

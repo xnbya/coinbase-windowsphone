@@ -27,6 +27,14 @@ namespace Coinbase
                 settings = (JSON1.UserSettings.User2)PhoneApplicationService.Current.State["settings"];
             else
                 GetUserInfo();
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("passcode"))
+            {
+                tglPasscode.IsChecked = true;
+                txtPassocde.Visibility = System.Windows.Visibility.Visible;
+                lblPasscode.Visibility = System.Windows.Visibility.Visible;
+                lblPasscode2.Visibility = System.Windows.Visibility.Visible;
+                txtOldPasscode.Visibility = System.Windows.Visibility.Visible;
+            }
             GetCbaseCurrencies();
             AuthToken = (string)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["token"];
 
@@ -126,7 +134,7 @@ namespace Coinbase
                    lstpkCurrency.ItemsSource = currenciesforlst;
                    lstpkCurrency.SelectedIndex = currentindex - 1;
                 });
-                string ss = "sfd";
+                
             }
 
         private void toggleSwitch1_Checked(object sender, RoutedEventArgs e)
@@ -152,6 +160,32 @@ namespace Coinbase
             if (settings.native_currency != selectedcurr.Code)
             {
                 UpdateCurrency(selectedcurr.Code);
+            }
+
+            if (IsolatedStorageSettings.ApplicationSettings.Contains("passcode") == false || txtOldPasscode.Text == (string)IsolatedStorageSettings.ApplicationSettings["passcode"])
+            {
+                if (tglPasscode.IsChecked == true)
+                {
+                    if (txtPassocde.Text.Length < 3)
+                    {
+                        MessageBox.Show("Passcode is not long enough", "Error", MessageBoxButton.OK);
+                    }
+                    else
+                    {
+                        System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings["passcode"] = txtPassocde.Text;
+                        MessageBox.Show("Updated passcode");
+                    }
+                    
+                }
+                else
+                {
+                    IsolatedStorageSettings.ApplicationSettings.Remove("passcode");
+                    MessageBox.Show("Deleted Passcode");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please enter your old passcode", "Incorrect passcode", MessageBoxButton.OK);
             }
 
         }

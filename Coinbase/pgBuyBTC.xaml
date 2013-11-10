@@ -33,7 +33,7 @@
                 <TextBlock Text="Sell" Name="Sell" />
             </toolkit:ListPicker>
             <TextBlock Height="69" Name="textBlock1" Text="Amount (BTC):" FontSize="40" Width="404" Margin="20,0,0,0" HorizontalAlignment="Left" />
-            <TextBox Height="71"  Name="txtAmount" Text="" Width="422" HorizontalAlignment="Left" Margin="8,0,0,0" TextChanged="txtAmount_TextChanged" />
+            <TextBox InputScope="Number" Height="71"  Name="txtAmount" Text="" Width="422" HorizontalAlignment="Left" Margin="8,0,0,0" TextChanged="txtAmount_TextChanged" />
             <TextBlock FontSize="25" Height="69" Name="lblSubtotal" Text="" Width="404" Foreground="#FFB4B4B4" Margin="20,0,0,0"/>
             <TextBlock FontSize="25" Foreground="#FFB4B4B4" Height="69" Name="lblCFees" Text="" Width="404" Margin="20,0,0,0"/>
             <TextBlock FontSize="25" Foreground="#FFB4B4B4" Height="69" Name="lblBankFees" Text="" Width="404" Margin="20,0,0,0"/>
