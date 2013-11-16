@@ -52,13 +52,13 @@
                     </Grid.Resources>
                     
                     <TextBlock Height="59" HorizontalAlignment="Left" Margin="13,-5,0,0" Name="textBlock1" Text="To:" VerticalAlignment="Top" FontSize="40" Width="69" />
-                    <TextBox InputScope="EmailNameOrAddress" Height="72" HorizontalAlignment="Left" Margin="4,41,0,0" Name="txtSendTo" Text="" VerticalAlignment="Top" Width="415" />
+                    <TextBox InputScope="EmailNameOrAddress" Height="72" HorizontalAlignment="Left" Margin="3,41,0,0" Name="txtSendTo" Text="" VerticalAlignment="Top" Width="414" />
                     <TextBlock Height="30" HorizontalAlignment="Left" Margin="19,109,0,0" Name="textBlock2" Text="enter an email or bitcoin address" VerticalAlignment="Top" />
-                    <TextBlock FontSize="40" Height="59" HorizontalAlignment="Left" Margin="16,126,0,0" Name="textBlock3" Text="Amount:" VerticalAlignment="Top" Width="270" />
-                    <TextBox InputScope="Number" Height="72" HorizontalAlignment="Left" Margin="4,170,0,0" Name="txtAmount" Text="" VerticalAlignment="Top" Width="267" />                    
+                    <TextBlock FontSize="40" Height="59" HorizontalAlignment="Left" Margin="16,132,0,0" Name="textBlock3" Text="Amount (BTC):" VerticalAlignment="Top" Width="270" />
+                    <TextBox InputScope="Number" Height="72" HorizontalAlignment="Left" Margin="3,176,0,0" Name="txtAmount" Text="" VerticalAlignment="Top" Width="414" />                    
                     <TextBlock FontSize="40" Height="59" HorizontalAlignment="Left" Margin="15,251,0,0" Name="textBlock4" Text="Message (optional):" VerticalAlignment="Top" Width="382" />
-                    <TextBox Height="168" HorizontalAlignment="Left" Margin="5,309,0,0" Name="txtMessage" Text="" VerticalAlignment="Top" Width="413" TextWrapping="Wrap" />
-                    <toolkit:ListPicker ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerFullModeItemTemplate}" Height="56" HorizontalAlignment="Left" Margin="275,174,0,0" Name="lstpkCurrency" VerticalAlignment="Top" Width="129" />
+                    <TextBox Height="168" HorizontalAlignment="Left" Margin="3,309,0,0" Name="txtMessage" Text="" VerticalAlignment="Top" Width="414" TextWrapping="Wrap" />
+                    <toolkit:ListPicker ExpansionMode="FullScreenOnly" FullModeItemTemplate="{StaticResource PickerFullModeItemTemplate}" Height="56" HorizontalAlignment="Left" Margin="275,174,0,0" Name="lstpkCurrency" VerticalAlignment="Top" Width="129" Visibility="Collapsed" />
                 </Grid>
             </controls:PanoramaItem>
             <controls:PanoramaItem Header="receive">

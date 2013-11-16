@@ -156,34 +156,41 @@ namespace Coinbase
 
         private void btnSaveChanges_Click(object sender, RoutedEventArgs e)
         {
-            currencyitem selectedcurr = (currencyitem)lstpkCurrency.SelectedItem;
-            if (settings.native_currency != selectedcurr.Code)
+            if (lstpkCurrency.SelectedItem != null)
             {
-                UpdateCurrency(selectedcurr.Code);
+                currencyitem selectedcurr = (currencyitem)lstpkCurrency.SelectedItem;
+                if (settings.native_currency != selectedcurr.Code)
+                {
+                    UpdateCurrency(selectedcurr.Code);
+                }
             }
 
             if (IsolatedStorageSettings.ApplicationSettings.Contains("passcode") == false || txtOldPasscode.Text == (string)IsolatedStorageSettings.ApplicationSettings["passcode"])
             {
                 if (tglPasscode.IsChecked == true)
                 {
-                    if (txtPassocde.Text.Length < 3)
+                    if (txtPassocde.Text.Length > 0)
                     {
-                        MessageBox.Show("Passcode is not long enough", "Error", MessageBoxButton.OK);
-                    }
-                    else
-                    {
-                        System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings["passcode"] = txtPassocde.Text;
-                        MessageBox.Show("Updated passcode");
+
+                        if (txtPassocde.Text.Length < 3)
+                        {
+                            MessageBox.Show("Passcode is not long enough", "Error", MessageBoxButton.OK);
+                        }
+                        else
+                        {
+                            System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings["passcode"] = txtPassocde.Text;
+                            MessageBox.Show("Updated passcode", "Success", MessageBoxButton.OK);
+                        }
                     }
                     
                 }
                 else
                 {
                     IsolatedStorageSettings.ApplicationSettings.Remove("passcode");
-                    MessageBox.Show("Deleted Passcode");
+                    MessageBox.Show("Deleted Passcode","Success",MessageBoxButton.OK);
                 }
             }
-            else
+            else if (txtPassocde.Text.Length > 0)
             {
                 MessageBox.Show("Please enter your old passcode", "Incorrect passcode", MessageBoxButton.OK);
             }
@@ -208,7 +215,7 @@ namespace Coinbase
         {
             string[] resultbits = e.Result.Split('"');
             if (resultbits[2].Contains("true"))
-                MessageBox.Show("Updated Currency");
+                MessageBox.Show("Updated Currency","Success",MessageBoxButton.OK);
             else
                 MessageBox.Show(resultbits[5]);
 

@@ -1,9 +1,6 @@
 <MarketplaceDetails>
-  <SmallAppTile>
-  </SmallAppTile>
-  <LargeAppTile>
-  </LargeAppTile>
-  <PCAppTile>
-  </PCAppTile>
-  <ScreenShots>;;;;;;;;</ScreenShots>
+  <SmallAppTile>ApplicationIcon.png</SmallAppTile>
+  <LargeAppTile>Background.png</LargeAppTile>
+  <PCAppTile>mplacelogo.png</PCAppTile>
+  <ScreenShots>coinbase_10-28-2013_19.24.4.653.png;;;;;;;;</ScreenShots>
 </MarketplaceDetails>

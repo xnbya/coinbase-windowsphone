@@ -1,5 +1,5 @@
 ﻿<phone:PhoneApplicationPage 
-    x:Class="Coinbase.MainPage"
+    x:Class="Coinbase.pgLogin"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
@@ -34,10 +34,10 @@
                 <ColumnDefinition Width="57*" />
                 <ColumnDefinition Width="240*" />
             </Grid.ColumnDefinitions>
-            <TextBlock Grid.ColumnSpan="2" Height="108" HorizontalAlignment="Left" Margin="29,6,0,0" Name="textBlock1" Text="enter your passcode" VerticalAlignment="Top" FontSize="40" Foreground="White" />
+            <TextBlock Grid.ColumnSpan="2" Height="108" HorizontalAlignment="Left" Margin="29,6,0,0" Name="lblEnterPasscode" Text="enter your passcode" VerticalAlignment="Top" FontSize="40" Foreground="White" />
             <TextBlock FontSize="40" Grid.ColumnSpan="2" Height="108" HorizontalAlignment="Left" Margin="29,141,0,0" Name="textBlock2" Text="forgot passcode?" VerticalAlignment="Top" Foreground="White" />
-            <Button Content="goto login" Height="72" HorizontalAlignment="Left" Margin="19,199,0,0" Name="btnGotoLogin" VerticalAlignment="Top" Width="189" Grid.ColumnSpan="2" Click="btnGotoLogin_Click" Foreground="White" />
-            <PasswordBox Grid.ColumnSpan="2" Height="72" HorizontalAlignment="Left" Margin="19,63,0,0" Name="passwordBox1" VerticalAlignment="Top" Width="379" />
+            <Button Content="goto login" Height="72" HorizontalAlignment="Left" Margin="19,199,0,0" Name="btnGotoLogin" VerticalAlignment="Top" Width="189" Grid.ColumnSpan="2" Click="btnGotoLogin_Click" Foreground="White" BorderBrush="White" />
+            <PasswordBox Grid.ColumnSpan="2" Height="72" HorizontalAlignment="Left" Margin="19,63,0,0" Name="passwordBox1" VerticalAlignment="Top" Width="379" SelectionForeground="White" BorderBrush="#BFFFFFFF" Background="#BFFFFFFF" />
             <TextBox InputScope="Number" Grid.ColumnSpan="2" Height="72" HorizontalAlignment="Left" Margin="19,63,0,0" Name="txtPasscode" Text="" VerticalAlignment="Top" Width="379" Background="Transparent" TextChanged="txtPasscode_TextChanged" SelectionForeground="Transparent" BorderBrush="Transparent" Opacity="0">
                 <TextBox.Foreground>
                     <SolidColorBrush />
@@ -45,7 +45,7 @@
             </TextBox>
            
         </Grid>
-        <TextBlock Height="77" HorizontalAlignment="Left" Margin="12,0,0,0" Name="lblTitle" Text="login" VerticalAlignment="Top" FontSize="50" Width="269" Visibility="Collapsed" />
+        <TextBlock Height="77" HorizontalAlignment="Left" Margin="12,0,0,0" Name="lblTitle" Text="login" VerticalAlignment="Top" FontSize="50" Width="269" Visibility="Collapsed" Foreground="White" />
         <phone:WebBrowser HorizontalAlignment="Left" Margin="0,71,0,0" Name="webBrowser1" VerticalAlignment="Top" Height="697" Width="480" Navigated="webBrowser1_Navigated" Visibility="Collapsed" />
     </Grid>
 </phone:PhoneApplicationPage>

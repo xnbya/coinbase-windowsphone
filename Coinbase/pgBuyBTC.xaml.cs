@@ -112,7 +112,7 @@ namespace Coinbase
                     {
                         blConfirm = false;
                         finalquantity = txtAmount.Text;
-                        if (MessageBox.Show("Are you sure you want to buy " + finalquantity + " BTC for " + buyresp.total.amount + " " + buyresp.total.currency, "Continue?", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+                        if (MessageBox.Show("Are you sure you want to " + ((TextBlock)lstBuySell.SelectedItem).Text + " " + finalquantity + " BTC for " + buyresp.total.amount + " " + buyresp.total.currency, "Continue?", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                         {                            
                             BuySellBitcoins();
                         }

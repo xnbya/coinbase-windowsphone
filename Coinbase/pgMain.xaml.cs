@@ -158,20 +158,22 @@ namespace Coinbase
 
         private void SendBTC(bool NeedsFee)
         {
-                        //send money
-            //webclient is easier to use when posting
-            WebClient wclient = new WebClient();
-            wclient.UploadStringCompleted += new UploadStringCompletedEventHandler(wclient_completed);
-            string user_fee = "";
-            if (NeedsFee)
-                user_fee = "\"user_fee\":\"0.0005\",";
-             
-            string jsonstr = "{\"transaction\":{\"to\":\"" + txtSendTo.Text + "\",\"amount\":\"" + txtAmount.Text + "\"," + user_fee + "\"notes\":\"" + txtMessage.Text + "\"}}";
+            if (MessageBox.Show("Send " + txtAmount.Text + " BTC to " + txtSendTo.Text + " ?", "Confirm sending", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            {
+                //send money
+                //webclient is easier to use when posting
+                WebClient wclient = new WebClient();
+                wclient.UploadStringCompleted += new UploadStringCompletedEventHandler(wclient_completed);
+                string user_fee = "";
+                if (NeedsFee)
+                    user_fee = "\"user_fee\":\"0.0005\",";
 
-            wclient.Headers[HttpRequestHeader.ContentType] = "application/json";
+                string jsonstr = "{\"transaction\":{\"to\":\"" + txtSendTo.Text + "\",\"amount\":\"" + txtAmount.Text + "\"," + user_fee + "\"notes\":\"" + txtMessage.Text + "\"}}";
 
-            wclient.UploadStringAsync(new Uri("https://coinbase.com/api/v1/transactions/send_money?access_token=" + AuthToken), "POST", jsonstr);
-            
+                wclient.Headers[HttpRequestHeader.ContentType] = "application/json";
+
+                wclient.UploadStringAsync(new Uri("https://coinbase.com/api/v1/transactions/send_money?access_token=" + AuthToken), "POST", jsonstr);
+            }
         }
 
         private void wclient_completed(object sender, UploadStringCompletedEventArgs e)
@@ -474,7 +476,7 @@ namespace Coinbase
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
                 
-                NavigationService.Navigate(new Uri("/MainPage.xaml", UriKind.Relative));
+                NavigationService.Navigate(new Uri("/pgLogin.xaml", UriKind.Relative));
                 
             });
             

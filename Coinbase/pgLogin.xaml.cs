@@ -18,7 +18,7 @@ using Microsoft.Phone.Shell;
 
 namespace Coinbase
 {
-    public partial class MainPage : PhoneApplicationPage
+    public partial class pgLogin : PhoneApplicationPage
     {
         public bool SaveToken;
         private string passcode;
@@ -26,7 +26,7 @@ namespace Coinbase
         private bool loadedtoken;
 
         // Constructor
-        public MainPage()
+        public pgLogin()
         {
             InitializeComponent();
 
@@ -166,14 +166,17 @@ namespace Coinbase
                 }
                 else
                 {
-                    SystemTray.SetProgressIndicator(this, null);
+                    Deployment.Current.Dispatcher.BeginInvoke(() =>
+                        {
+                            SystemTray.SetProgressIndicator(this, null);
+                        });
                     loadedtoken = true;
                 }
 
             }
             }
              
-            catch
+            catch( Exception e)
                 {
 
                 //something went wrong, goto the login page
@@ -182,7 +185,13 @@ namespace Coinbase
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
                     {                        
                         LoadWebbrowser();
+
+                        //testing
+                       // MessageBox.Show(e.Message);
+                      //  MessageBox.Show(e.StackTrace);
                     });
+
+                
                     
                 }
 
@@ -194,13 +203,21 @@ namespace Coinbase
             System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Remove("passcode");
         }
 
-        private void phoneTextBox1_TextChanged(object sender, TextChangedEventArgs e)
+
+        private void txtPasscode_TextChanged(object sender, TextChangedEventArgs e)
         {
+            passwordBox1.Password = txtPasscode.Text;
             if (txtPasscode.Text == passcode)
             {
-                
-                loginauth = true;                
-                grid1.Visibility = System.Windows.Visibility.Collapsed;
+
+                loginauth = true;
+               // grid1.Visibility = System.Windows.Visibility.Collapsed;
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                    {
+                        lblEnterPasscode.Text = "please wait";
+                        passwordBox1.Background = new SolidColorBrush(Color.FromArgb(100, 90, 90, 90));
+                    });
+
                 if (loadedtoken)
                 {
                     Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -210,13 +227,8 @@ namespace Coinbase
                         //NavigationService.GoBack();
                     });
                 }
-                
-            }
-        }
 
-        private void txtPasscode_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            passwordBox1.Password = txtPasscode.Text;
+            }
         }
 
 
