@@ -33,10 +33,11 @@
                     </Grid.RowDefinitions>
                     <TextBlock Height="56" HorizontalAlignment="Right" Margin="0,36,230,0" Name="lblBalance" Text="Balance:" VerticalAlignment="Top" FontSize="40" Width="179" Grid.Row="1" />
                     
-                    <TextBlock Grid.Row="1" Height="80" Margin="0,79,68,0" Name="lblBalanceBTC" Text="Loading..." VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Right" Width="341" />
-                    <TextBlock FontSize="40" Height="80" HorizontalAlignment="Right" Margin="0,141,65,0" Name="lblLocalCurrAmount" Text="Loading..." VerticalAlignment="Top" Width="341" Grid.Row="1" />
-                    <Button Content="Buy  &amp; Sell Bitcoins" Grid.Row="1" Height="72" HorizontalAlignment="Left" Margin="3,215,0,0" Name="btnBuyBTC" VerticalAlignment="Top" Width="303" Click="btnBuyBTC_Click" />
-                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Right" Margin="0,7,17,0" Name="lblUser" Text="User" VerticalAlignment="Top" Width="392" Grid.RowSpan="2" />
+                    <TextBlock Grid.Row="1" Height="80" Margin="0,79,68,0" Name="lblBalanceBTC" Text="Loading..." VerticalAlignment="Top" FontSize="48" HorizontalAlignment="Right" Width="341"></TextBlock>
+                    <TextBlock FontSize="40" Height="80" HorizontalAlignment="Right" Margin="0,141,65,0" Name="lblLocalCurrAmount" Text="" VerticalAlignment="Top" Width="341" Grid.Row="1" />
+                    <Button Content="Buy  &amp; Sell Bitcoins" Grid.Row="1" Height="72" HorizontalAlignment="Left" Margin="3,251,0,0" Name="btnBuyBTC" VerticalAlignment="Top" Width="303" Click="btnBuyBTC_Click" />
+                    <TextBlock FontSize="32" Height="56" HorizontalAlignment="Right" Margin="0,7,17,0" Name="lblUser" Text="user" VerticalAlignment="Top" Width="392" Grid.RowSpan="2" />
+                    <TextBlock FontSize="32" Height="80" HorizontalAlignment="Right" Margin="0,200,64,0" Name="lblBTCLocalExch" Text="" VerticalAlignment="Top" Width="341" Grid.Row="1" />
                 </Grid>
             </controls:PanoramaItem>
 
@@ -70,7 +71,7 @@
             </controls:PanoramaItem>
             <controls:PanoramaItem Header="history">
                 <Grid>
-                    <ListBox Height="496" HorizontalAlignment="Left" Margin="15,2,0,0" Name="lstHistory" VerticalAlignment="Top" Width="402" ItemsSource="{Binding}" SelectionChanged="lstHistory_SelectionChanged">
+                    <ListBox Height="475" HorizontalAlignment="Left" Margin="5,2,0,0" Name="lstHistory" VerticalAlignment="Top" Width="412" ItemsSource="{Binding}" SelectionChanged="lstHistory_SelectionChanged">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Vertical">

@@ -20,7 +20,7 @@ namespace Coinbase
 {
     public partial class pgLogin : PhoneApplicationPage
     {
-        public bool SaveToken;
+       
         private string passcode;
         private bool loginauth;
         private bool loadedtoken;
@@ -36,6 +36,7 @@ namespace Coinbase
             {
                 passcode = (string)System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings["passcode"];
                 grid1.Visibility = System.Windows.Visibility.Visible;
+                txtPasscode.Focus();
 
             }
             else
@@ -75,11 +76,10 @@ namespace Coinbase
             System.IO.IsolatedStorage.IsolatedStorageSettings settings = System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings;
             if (settings.Contains("refreshToken"))
             {
-                SaveToken = true;  
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://coinbase.com/oauth/token?grant_type=refresh_token&refresh_token=" + (string)settings["refreshToken"] + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=7c49c1d40b21548106163d2fc4151671f6227cc27033ddf0c5fcb48f74e44019&client_secret=1663b836e3d37fd8e868fdf562d15bde1beef3f27d6301d80fddf280c5765245");
                 req.Method = "POST";
                 req.Accept = "text/xml";
-                AsyncCallback asynccallbk = new AsyncCallback(BalanceClbk);
+                AsyncCallback asynccallbk = new AsyncCallback(TokenRefreshClbk);
                 req.BeginGetResponse(asynccallbk, req);
             }
             else
@@ -103,7 +103,6 @@ namespace Coinbase
 
         private void webBrowser1_Navigated(object sender, System.Windows.Navigation.NavigationEventArgs e)
         {
-            SaveToken = true;
             string url = webBrowser1.Source.ToString();
             if(url.Contains("authorize/"))
             {
@@ -111,7 +110,7 @@ namespace Coinbase
                 HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://coinbase.com/oauth/token?grant_type=authorization_code&code=" + code + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=7c49c1d40b21548106163d2fc4151671f6227cc27033ddf0c5fcb48f74e44019&client_secret=1663b836e3d37fd8e868fdf562d15bde1beef3f27d6301d80fddf280c5765245");
                 req.Method = "POST";
                 req.Accept = "text/xml";
-                AsyncCallback asynccallbk = new AsyncCallback(BalanceClbk);
+                AsyncCallback asynccallbk = new AsyncCallback(TokenRefreshClbk);
                 req.BeginGetResponse(asynccallbk, req);
                 
 
@@ -122,7 +121,7 @@ namespace Coinbase
 
 
 
-        void BalanceClbk(IAsyncResult result)
+        void TokenRefreshClbk(IAsyncResult result)
         {
             try
           {
@@ -136,24 +135,12 @@ namespace Coinbase
                 DataContractJsonSerializer json = new DataContractJsonSerializer(typeof(JSON1.OAUTHstep2));
                 JSON1.OAUTHstep2 Response = json.ReadObject(response.GetResponseStream()) as JSON1.OAUTHstep2;
                 Microsoft.Phone.Shell.PhoneApplicationService.Current.State["token"] = Response.access_token;
+                Microsoft.Phone.Shell.PhoneApplicationService.Current.State["tokenTime"] = DateTime.Now;
                 System.IO.IsolatedStorage.IsolatedStorageSettings settings = System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings;
-
-                if (SaveToken)
-                {
-                    if (!settings.Contains("refreshToken"))
-                    {
-                        settings.Add("refreshToken", Response.refresh_token);
-                    }
-                    else
-                    {
-                        settings["refreshToken"] = Response.refresh_token;
-                    }
-                }
-                else
-                {
-                    settings.Remove("refreshToken");
-                }
-
+                if (!settings.Contains("refreshToken"))                
+                    settings.Add("refreshToken", Response.refresh_token);                
+                else                
+                    settings["refreshToken"] = Response.refresh_token;
                 if (loginauth == true)
                 {
 
@@ -201,6 +188,7 @@ namespace Coinbase
         {
             LoadWebbrowser();
             System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Remove("passcode");
+            System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Remove("refreshToken");
         }
 
 

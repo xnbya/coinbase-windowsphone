@@ -36,9 +36,7 @@ namespace Coinbase
         public pgMain()
         {            
             InitializeComponent();            
-            AuthToken = (string)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["token"];
-            GetHistory();
-            GetAddress();
+
 
             //UI stuff
             CreateButtons();         
@@ -62,8 +60,11 @@ namespace Coinbase
 
         protected override void OnNavigatedTo(System.Windows.Navigation.NavigationEventArgs e)
         {
+            //this alows things to be done when user lands on page from anywhere
+
             base.OnNavigatedTo(e);
 
+            //when navigated back from pgscan
             if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("qrscan"))
             {
                 string rawaddress = (string)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["qrscan"];
@@ -77,13 +78,64 @@ namespace Coinbase
                 PhoneApplicationService.Current.State.Remove("qrscan");
             }
 
-            
+            //when changed local curr in settings
+            if (PhoneApplicationService.Current.State.ContainsKey("newcurr"))
+            {
+                currency = (string)PhoneApplicationService.Current.State["newcurr"];
+                PhoneApplicationService.Current.State.Remove("newcurr");
+                GetBalanceLocalCurrency();
+            }
+
+            //need to refresh the token
+            if (!PhoneApplicationService.Current.State.ContainsKey("tokenTime") || ((DateTime)PhoneApplicationService.Current.State["tokenTime"]).AddHours(2) < DateTime.Now)
+            {
+                System.IO.IsolatedStorage.IsolatedStorageSettings settings = System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings;
+                if (settings.Contains("refreshToken"))
+                {
+                    HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://coinbase.com/oauth/token?grant_type=refresh_token&refresh_token=" + (string)settings["refreshToken"] + "&redirect_uri=urn:ietf:wg:oauth:2.0:oob&client_id=7c49c1d40b21548106163d2fc4151671f6227cc27033ddf0c5fcb48f74e44019&client_secret=1663b836e3d37fd8e868fdf562d15bde1beef3f27d6301d80fddf280c5765245");
+                    req.Method = "POST";
+                    req.Accept = "text/xml";
+                    AsyncCallback asynccallbk = new AsyncCallback(TokenRefreshClbk);
+                    req.BeginGetResponse(asynccallbk, req);
+                }
+            }
+            else if (AuthToken == null)
+            {
+                AuthToken = (string)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["token"];
+                GetHistory();
+                GetAddress();
+            }
 
             
         }
 
+        void TokenRefreshClbk(IAsyncResult result)
+        {          
+                //Get the tokens from the OAUTH response
+                HttpWebRequest request = (HttpWebRequest)result.AsyncState;
+                HttpWebResponse response = (HttpWebResponse)request.EndGetResponse(result);
+                using (StreamReader httpWebStreamReader = new StreamReader(response.GetResponseStream()))
+                {
+
+                    DataContractJsonSerializer json = new DataContractJsonSerializer(typeof(JSON1.OAUTHstep2));
+                    JSON1.OAUTHstep2 Response = json.ReadObject(response.GetResponseStream()) as JSON1.OAUTHstep2;
+                    Microsoft.Phone.Shell.PhoneApplicationService.Current.State["token"] = Response.access_token;
+                    Microsoft.Phone.Shell.PhoneApplicationService.Current.State["tokenTime"] = DateTime.Now;
+                    System.IO.IsolatedStorage.IsolatedStorageSettings settings = System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings;
+                    settings["refreshToken"] = Response.refresh_token;
+
+                    AuthToken = Response.access_token;
+                    GetHistory();
+                    GetAddress();
+
+                }
+           
+        }
+    
+
         public void GetAddress()
         {
+            //gets recive address
             HttpWebRequest req = (HttpWebRequest)WebRequest.Create("https://coinbase.com/api/v1/account/receive_address?access_token=" + AuthToken);
             req.Method = "GET";   
             req.BeginGetResponse(new AsyncCallback(AddressClbk), req);
@@ -106,6 +158,7 @@ namespace Coinbase
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
                 {
                     txtBTCAddress.Text = currentaddress;
+                    //encodes QR code
                     image1.Source = TCD.Device.Camera.Barcodes.Encoder.GenerateQRCode(qrcodestr, 350);
                 });
             }
@@ -118,6 +171,7 @@ namespace Coinbase
 
         private void CreateButtons()
         {
+            //buttons for app bar
             btnSend = appbutton("send", "/Images/upload.png", btnSend_Click);
             btnNewAddress = appbutton("new address", "/Images/add.png", btnNewAddress_Click);
             btnScanQR = appbutton("scan qr code", "/Images/eye.png", btnScanQR_Click);
@@ -207,14 +261,7 @@ namespace Coinbase
 
         private void btnScanQR_Click(object sender, EventArgs e)
         {
-            //using TCD, does fuck all
-           /* TCD.Device.Camera.CodeScannerPopup scp = new TCD.Device.Camera.CodeScannerPopup(false);
-            TCD.Device.Camera.Barcodes.ScanResult sr = await scp.ShowAsync("COINBASE","scan QR code"); 
-            string btc = sr.Text.Split(':')[1].Split(',')[0];
-            Deployment.Current.Dispatcher.BeginInvoke(() =>
-            {
-                txtSendTo.Text = btc;
-            });*/
+            //loads the QR scanner
             try
             {
                 Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -295,11 +342,12 @@ namespace Coinbase
                 {
                     string result2 = httpWebStreamReader.ReadToEnd();
                     string[] results = result2.Split('"');
-                    decimal amount = decimal.Parse(results[3]);
-                    amount = amount * currentaccountBTC;
+                    decimal exchange = decimal.Parse(results[3]);
+                    decimal amount = exchange * currentaccountBTC;
                     Dispatcher.BeginInvoke(() =>
                         {
                             lblLocalCurrAmount.Text = decimal.Round(amount, 2).ToString() + " " + results[7];
+                            lblBTCLocalExch.Text = "1 BTC = " + exchange.ToString() + " " + results[7];
                         });
                 }
                 catch
@@ -401,6 +449,7 @@ namespace Coinbase
 
         public class TransactionLstbxItem
         {
+            //used in the history lstpcker
             public string BTC { get; set; }
             public string Name {get;set;}
             public string id { get; set; }
@@ -471,6 +520,7 @@ namespace Coinbase
 
         private void ApplicationBarMenuItem_Click_1(object sender, EventArgs e)
         {
+            //logout
             System.IO.IsolatedStorage.IsolatedStorageSettings.ApplicationSettings.Remove("refreshToken");
             Microsoft.Phone.Shell.PhoneApplicationService.Current.State["logoff"] = true;
             Deployment.Current.Dispatcher.BeginInvoke(() =>
@@ -504,11 +554,6 @@ namespace Coinbase
                 NavigationService.Navigate(new Uri("/pgBuyBTC.xaml", UriKind.Relative));
 
             });
-        }
-
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            lstHistory.Items[500] = "aa";
         }
 
     }

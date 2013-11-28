@@ -31,8 +31,8 @@
             <Rectangle Height="44" HorizontalAlignment="Left" Margin="12,278,0,0" Name="recGreen" Stroke="Black" StrokeThickness="1" VerticalAlignment="Top" Width="143" Fill="#FF008400" Visibility="Collapsed" />
             <TextBlock Height="44" HorizontalAlignment="Left" Margin="18,18,0,0" Name="lblTime" Text="time" VerticalAlignment="Top" Width="438" FontSize="30" />
             <TextBlock Height="57" HorizontalAlignment="Left" Margin="18,68,0,0" Name="lblBTC" Text="BTC" VerticalAlignment="Top" FontSize="50" Width="438" />
-            <TextBlock Height="41" HorizontalAlignment="Left" Margin="18,148,0,0" Name="lblFrom" Text="From" VerticalAlignment="Top" FontSize="35" Width="438" />
-            <TextBlock FontSize="35" Height="41" HorizontalAlignment="Left" Margin="18,212,0,0" Name="lblTo" Text="To" VerticalAlignment="Top" Width="438" Tap="lblTo_Tap" />
+            <TextBlock Height="58" HorizontalAlignment="Left" Margin="18,148,0,0" Name="lblFrom" Text="From" VerticalAlignment="Top" FontSize="35" Width="438" />
+            <TextBlock FontSize="35" Height="59" HorizontalAlignment="Left" Margin="18,212,0,0" Name="lblTo" Text="To" VerticalAlignment="Top" Width="438" Tap="lblTo_Tap" />
             <TextBlock FontSize="30" Height="41" HorizontalAlignment="Left" Margin="18,277,0,0" Name="lblStatus" Text="complete" VerticalAlignment="Top" Width="438" TextAlignment="Left" />
             <TextBlock FontSize="40" Height="60" HorizontalAlignment="Left" Margin="13,342,0,0" Name="lblRequest" Text="this is a request!" VerticalAlignment="Top" Width="438" TextAlignment="Left" Foreground="Red" Visibility="Collapsed" />
         </Grid>
