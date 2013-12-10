@@ -32,6 +32,7 @@ namespace Coinbase
         string currentaddress;
         decimal currentaccountBTC;
         public string currency;
+        public decimal exchange;
 
         public pgMain()
         {            
@@ -39,8 +40,8 @@ namespace Coinbase
 
 
             //UI stuff
-            CreateButtons();         
-
+            CreateButtons();
+            LoadCurrencies();
             
 
         }
@@ -48,10 +49,11 @@ namespace Coinbase
         private void LoadCurrencies()
         {
             List<string> currencies = new List<string>();
-            currencies.Add("BTC");
             currencies.Add("mBTC");
-            currencies.Add("µBTC");            
-            currencies.Add(currency);
+            currencies.Add("BTC");
+            //currencies.Add("µBTC");
+            if(currency != null)            
+                currencies.Add(currency);
             Dispatcher.BeginInvoke(() =>
                 {
                     lstpkCurrency.ItemsSource = currencies;
@@ -67,15 +69,36 @@ namespace Coinbase
             //when navigated back from pgscan
             if (Microsoft.Phone.Shell.PhoneApplicationService.Current.State.ContainsKey("qrscan"))
             {
-                string rawaddress = (string)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["qrscan"];
-                if (rawaddress.Contains(':'))
+                //try this, as there is no actuall standard for the QR codes something may go wrong
+                try
                 {
-                    rawaddress = rawaddress.Split(':')[1].Split(',')[0];
+                    string rawaddress = (string)Microsoft.Phone.Shell.PhoneApplicationService.Current.State["qrscan"];
+                    if (rawaddress.Contains(':'))
+                    {
+                        string[] bits = rawaddress.Split(':')[1].Split('?');
+                        rawaddress = bits[0];
+                        foreach (string part in bits)
+                        {
+                            if (part.Contains("amount"))
+                            {
+                                string amount = part.Split('=')[1];
+                                decimal decamount = 0;
+                                if (decimal.TryParse(amount, out decamount))
+                                {
+                                    txtAmount.Text = decamount.ToString();
+                                    lstpkCurrency.SelectedIndex = 1;
+                                }
+                            }
+                        }
+                    }
+
+                    txtSendTo.Text = rawaddress;
+
+                    PhoneApplicationService.Current.State.Remove("qrscan");
                 }
-
-                txtSendTo.Text = rawaddress;
-
-                PhoneApplicationService.Current.State.Remove("qrscan");
+                catch
+                {
+                }
             }
 
             //when changed local curr in settings
@@ -212,7 +235,25 @@ namespace Coinbase
 
         private void SendBTC(bool NeedsFee)
         {
-            if (MessageBox.Show("Send " + txtAmount.Text + " BTC to " + txtSendTo.Text + " ?", "Confirm sending", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
+            decimal rawamount = 0;
+            if(decimal.TryParse(txtAmount.Text,out rawamount))
+            {
+            
+            decimal BTCamount = 0;
+            switch((string)lstpkCurrency.SelectedItem)
+            {
+                case "BTC":
+                    BTCamount = rawamount;
+                    break;
+                case "mBTC":
+                    BTCamount = rawamount / 1000;
+                    break;
+                default:
+                    BTCamount = decimal.Round(rawamount / exchange,6);
+                    break;
+            }
+
+            if (NeedsFee || MessageBox.Show("Send " + BTCamount + " BTC (" + decimal.Round(BTCamount*exchange,2).ToString() + " " + currency + ") to " + txtSendTo.Text + " ?", "Confirm sending", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
             {
                 //send money
                 //webclient is easier to use when posting
@@ -222,12 +263,17 @@ namespace Coinbase
                 if (NeedsFee)
                     user_fee = "\"user_fee\":\"0.0005\",";
 
-                string jsonstr = "{\"transaction\":{\"to\":\"" + txtSendTo.Text + "\",\"amount\":\"" + txtAmount.Text + "\"," + user_fee + "\"notes\":\"" + txtMessage.Text + "\"}}";
+                string jsonstr = "{\"transaction\":{\"to\":\"" + txtSendTo.Text + "\",\"amount\":\"" + BTCamount.ToString() + "\"," + user_fee + "\"notes\":\"" + txtMessage.Text + "\"}}";
 
                 wclient.Headers[HttpRequestHeader.ContentType] = "application/json";
 
                 wclient.UploadStringAsync(new Uri("https://coinbase.com/api/v1/transactions/send_money?access_token=" + AuthToken), "POST", jsonstr);
             }
+            }
+                else
+                {
+                    MessageBox.Show("Please enter a valid amount","Unable to send",MessageBoxButton.OK);
+                }
         }
 
         private void wclient_completed(object sender, UploadStringCompletedEventArgs e)
@@ -245,10 +291,11 @@ namespace Coinbase
                 txtAmount.Text = "";
                 txtMessage.Text = "";
                 txtSendTo.Text = "";
+                GetHistory();
             }
             else
             {
-                if (Response.errors[0].Contains("requires a 0.0005 fee"))
+                if (Response.errors[0].Contains("fee"))
                 {
                     if (MessageBox.Show(Response.errors[0], "Add fee?", MessageBoxButton.OKCancel) == MessageBoxResult.OK)
                         SendBTC(true);
@@ -342,7 +389,7 @@ namespace Coinbase
                 {
                     string result2 = httpWebStreamReader.ReadToEnd();
                     string[] results = result2.Split('"');
-                    decimal exchange = decimal.Parse(results[3]);
+                    exchange = decimal.Parse(results[3]);
                     decimal amount = exchange * currentaccountBTC;
                     Dispatcher.BeginInvoke(() =>
                         {

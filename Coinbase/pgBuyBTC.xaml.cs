@@ -145,8 +145,16 @@ namespace Coinbase
 
         private void button1_Click_1(object sender, RoutedEventArgs e)
         {
-            blConfirm = true;
-            GetBuyPrice();
+            decimal btcamount = 0;
+            if (decimal.TryParse(txtAmount.Text, out btcamount))
+            {
+                blConfirm = true;
+                GetBuyPrice();
+            }
+            else
+            {
+                MessageBox.Show("Please enter a valid amount", "Error", MessageBoxButton.OK);
+            }
 
         }
 

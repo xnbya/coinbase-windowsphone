@@ -104,8 +104,8 @@ namespace Coinbase
             else
             {
                 MessageBox.Show(e.ExceptionObject.Message, "Something went wrong :(",MessageBoxButton.OK);
-                MessageBox.Show(e.ExceptionObject.StackTrace);
-                MessageBox.Show(e.ExceptionObject.Data.ToString());
+               // MessageBox.Show(e.ExceptionObject.StackTrace);
+                //MessageBox.Show(e.ExceptionObject.Data.ToString());
                 
             }
         }

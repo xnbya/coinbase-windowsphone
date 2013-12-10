@@ -128,6 +128,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Coinbase_2013_11_30_19_37_39.sap" />
+    <None Include="Coinbase_2013_11_30_19_46_23.sap" />
     <None Include="packages.config" />
     <None Include="Properties\AppManifest.xml" />
     <None Include="Properties\WMAppManifest.xml">

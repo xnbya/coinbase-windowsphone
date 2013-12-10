@@ -162,7 +162,14 @@ namespace Coinbase
                 currencyitem selectedcurr = (currencyitem)lstpkCurrency.SelectedItem;
                 if (settings.native_currency != selectedcurr.Code)
                 {
-                    UpdateCurrency(selectedcurr.Code);
+                    try
+                    {
+                        UpdateCurrency(selectedcurr.Code);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Unable to update currency", MessageBoxButton.OK);
+                    }
                 }
             }
 
